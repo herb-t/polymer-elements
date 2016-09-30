@@ -1,0 +1,195 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../google-apis/google-client-loader.html">
+
+
+<!--
+`<calendar-data>` is a Polymer element that works with `<calendar-main>`.  `<calendar-data>` uses the google-client-loader element to process requests from the google calendar API.
+
+Example:
+
+    <calendar-data
+
+      api-key="{{apiKey}}" 
+      calendar-id="{{calendarId}}"
+      events="{{events}}" 
+      loaded="{{eventsLoaded}}">
+      
+    </calendar-data>
+
+@element calendar-data
+@demo demo/index.html
+-->
+
+<dom-module id="calendar-data">
+
+  <template strip-whitespace>
+
+    <google-client-loader id="calendar" name="calendar" version="v3"
+      on-google-api-load="_onLoad" on-google-api-load-error="_onError"></google-client-loader>
+  
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'calendar-data',
+
+      properties: {
+        /**
+         * The apiKey of calendar.
+         * @see {@link https://developers.google.com/api-client-library/python/guide/aaa_apikeys|API keys}
+         */
+        apiKey: {
+          type: String,
+          notify: true,
+          reflectToAttribute: true
+        },
+        /**
+         * The id of calendar.
+         * @see {@link https://support.appmachine.com/hc/en-us/articles/203645966-Find-your-Google-Calendar-ID-for-the-Events-block|Find your calendar id.}
+         */
+        calendarId: {
+          type: String,
+          notify: true,
+          value: null,
+          reflectToAttribute: true,
+          observer: '_calendarIdChanged'
+        },
+        /**
+         * The Array of events that are found. You can listen for this property
+         * change or bind to it.
+         * @return Array{}
+         */
+        events: {
+          type:Array,
+          notify: true,
+          value: function() {
+            return [];
+          }
+        },
+        /**
+         * Whether the request has been completed successfully.
+         * @return Boolean
+         */
+        loaded: {
+          type:Boolean,
+          notify: true,
+          value: false
+        }
+      },
+
+      /**
+       * calls request()
+       */
+      _calendarIdChanged: function() {
+
+        this.request();
+
+      },
+
+      /**
+       * calls request()
+       */
+      _onLoad: function() {
+
+        this.request();
+
+      },
+
+      /**
+       * on error
+       */
+      _onError: function() {},
+
+      /**
+       * processes request method from calendar API
+       */
+      request: function() {
+        if (this.$.calendar.api) {
+          if (this.apiKey) {
+            gapi.client.setApiKey(this.apiKey);
+          }
+          var params = {
+            calendarId: this.calendarId,
+            timeMin: (new Date()).toISOString()
+          };
+          var request = this.$.calendar.api.events.list(params);
+          request.execute(function(response) {
+            this.cancelDebouncer('calendarRequest');
+            this.loaded = true;
+            this._processResponse(response.items);
+
+          }.bind(this), function(err){
+            this.loaded = true;
+            this.events = [];
+          }.bind(this));
+          this.debounce('calendarRequest', this._requestTimeout.bind(this), 5000);
+        }
+
+      },
+
+      /**
+       * request timeout
+       */
+      _requestTimeout: function() {
+        this.loaded = true;
+        this.events = [];
+      },
+
+      /**
+       * processes response
+       */
+      _processResponse: function(items) {
+        //process the description of each item and tokenize the variables found inside
+        var events = items.map(function(item) {
+
+          var event = this._processItemDescription(item);
+
+          return event;
+
+        }, this);
+        // return only non-null events
+        this.events = events.filter(function(event) {
+
+          if (event && event.props) {
+            return true;
+          } else {
+            return false;
+          };
+
+        });
+      },
+
+      /**
+       * preocess event description
+       */
+      _processItemDescription: function(item) {
+        var description = item.description;
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(description, 'application/xml');
+        var props = {};
+
+        item.props = props;
+        item.doc = doc;
+
+        return item;
+
+      }
+
+      // end
+    });
+  })();
+  </script>
+</dom-module>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <title>calendar-main demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import" href="../../calendar-main/calendar-main.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+      .demo-container {
+        width: 100%;
+        max-width: 1080px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="demo-container">
+      <h3>Basic &#60;calendar-data&#62; Demo using &#60;calendar-main&#62;</h3>
+      <demo-snippet>
+        <template>
+
+          <calendar-main 
+            api-key="AIzaSyCpKBHDbesgpmLHrhS3GtFDVETTL6a4Umw" 
+            calendar-id="byhook.com_lpri10t0iag2b0nmh9g6f5e3no@group.calendar.google.com">
+          </calendar-main>
+
+        </template>
+      </demo-snippet>
+    </div>
+
+  </body>
+</html>
