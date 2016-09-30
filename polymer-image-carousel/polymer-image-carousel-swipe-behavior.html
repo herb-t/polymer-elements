@@ -1,0 +1,61 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`<polymer-image-carousel-swipe-behavior>` is...
+
+   * `ImageCarouselSwipeBehavior` is a behavior that can be used in the `<polymer-image-carousel>` elements to
+   * handle swipe events
+   *
+-->
+
+<script>
+  Polymer.ImageCarouselSwipeBehavior = {
+    properties: {
+      horizontalThreshold: {
+        type: Number,
+        value: 15
+      },
+      verticalThreshold: {
+        type: Number,
+        value: 50
+      }
+    },
+
+    listeners: {
+      down: '_onDown',
+      up: '_onUp'
+    },
+
+    _onDown: function(event) {
+
+      this._x = event.detail.x;
+      this._y = event.detail.y;
+
+    },
+
+    _onUp: function(event) {
+
+      var dx = event.detail.x - this._x;
+      var dy = event.detail.y - this._y;
+      var xDirection = dx > 0;
+      var name = xDirection ? 'swipe-right' : 'swipe-left';
+
+      if (Math.abs(dx) > this.horizontalThreshold && Math.abs(dy) < this.verticalThreshold) {
+
+        this.fire(name);
+        
+      }
+
+    }
+  };
+</script>
