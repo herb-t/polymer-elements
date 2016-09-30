@@ -1,10 +1,10 @@
-## Polymer Custom Elements
+# \<material-card-col\>
 
-A collection of elements that can be reused.
+Material design paper card vertical layout element
 
-### Setup
+## Install the Polymer-CLI
 
-Elements are built using the [Polymer CLI](https://www.npmjs.com/package/polymer-cli)
+First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
 
 ## Viewing Your Application
 
@@ -36,4 +36,3 @@ $ polymer test
 ```
 
 Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
-

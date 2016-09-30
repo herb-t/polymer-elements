@@ -1,0 +1,160 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`<material-card-col>` is a card element that displays a full size image on one end of the card (either an image tag or `<iron-image>`), and some text/copy on the other end (top or bottom).  The 'layout-reverse' attribute will reverse the order of what goes on the left and what goes on the right (desktop).  Mobile layout stacks and the image always goes first (top).
+
+Example:
+
+    <div is="material-card-col">
+      <img src="../path/to/image.jpg" card-hero>
+
+      <div card-content>
+        <div class="copy">
+          <h1>Your title</h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+          Omnis, nostrum rerum sunt, cum ipsum dolorem, laudantium 
+          culpa reiciendis aliquid delectus eaque. Quisquam quia, 
+          impedit ab. Quidem illum vitae iure velit!</p>
+        </div>
+      </div>
+    </div>
+
+### Styling
+
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--card-align-items` | flex property: align-items value | center
+`--card-hero-padding` | padding value for hero section of card | 0
+`--card-content-padding` | padding value for content section of card | 25px
+`--card-content-text-align` | content section text align property value | left
+`--card-background-color` | card background color | white
+`--card-border` | box shadow values - set to 'none' to remove | present
+
+@element yt-next-up-card
+@demo demo/index.html
+-->
+
+<dom-module id="material-card-col">
+  <template>
+    <style>
+      :host {
+        --card-align-items: center;
+        --card-hero-padding: 0;
+        --card-content-padding: 25px;
+        --card-content-text-align: left;
+        --card-background-color: #ffffff;     
+        --card-border: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        
+        display: block;
+      }
+
+      .card-layout {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        -webkit-align-items: var(--card-align-items);
+                align-items: var(--card-align-items);
+        background: var(--card-background-color);
+        -webkit-box-shadow: var(--card-border);
+                box-shadow: var(--card-border);
+      }
+
+      /**
+       * Hero Styles
+       */
+      #hero {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        padding: var(--card-hero-padding);
+      }
+
+      #hero ::content img {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+      }
+
+      /**
+       * Content styles
+       */
+      #content {
+        width: 100%;
+        padding: var(--card-content-padding);
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        text-align: var(--card-content-text-align);
+      }
+
+      :host[layout-reverse] .card-layout {
+        -webkit-flex-direction: column-reverse;
+            -ms-flex-direction: column-reverse;
+                flex-direction: column-reverse;
+      }
+
+      :host[hero-only] .card-layout #content {
+        display: none;
+      }
+
+      @media screen and (max-width: 767px) {
+        .card-layout,
+        :host[layout-reverse] .card-layout {
+          -webkit-flex-direction: column;
+              -ms-flex-direction: column;
+                  flex-direction: column;
+        }
+      }
+
+    </style>
+
+    <div class="card-layout">
+      <!-- hero -->
+      <div id="hero">
+
+        <content select="[card-hero]"></content>
+
+      </div>
+
+      <!-- content -->
+      <div id="content">
+
+        <content select="[card-content]"></content>
+
+      </div>
+    </div>
+
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'material-card-col',
+
+      extends: 'div'
+
+    });
+  </script>
+</dom-module>

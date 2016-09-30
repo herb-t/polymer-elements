@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <title>material-card-row demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import" href="../material-card-row.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+      .demo-layout {
+        width: 100%;
+        max-width: 1080px;
+        margin: 0 auto;
+      }
+        
+      .copy {
+        padding: 0 25px;
+      }
+
+    </style>
+  </head>
+  <body>
+
+    <div class="demo-layout">
+      <h3>Basic &#60;material-card-row&#62; Demo</h3>
+      <demo-snippet>
+        <template>
+          <div is="material-card-row">
+
+            <img src="http://placekitten.com/g/500/300" alt="placekitten" card-hero>
+
+            <div card-content>
+              <div class="copy">
+                <h1>Headline</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias velit adipisci minima expedita fugit esse ducimus vel corporis, magni repellat, non, nobis reprehenderit odit illo officiis quas optio obcaecati pariatur.</p>
+              </div>
+            </div>
+
+          </div>
+        </template>
+      </demo-snippet>
+
+      <h3>&#60;material-card-row&#62; Demo with reverse-layout</h3>
+      <demo-snippet>
+        <template>
+          <div is="material-card-row" layout-reverse>
+            
+            <img src="http://placekitten.com/g/500/300" alt="placekitten" card-hero>
+
+            <div card-content>
+              <div class="copy">
+                <h1>Headline</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias velit adipisci minima expedita fugit esse ducimus vel corporis, magni repellat, non, nobis reprehenderit odit illo officiis quas optio obcaecati pariatur.</p>
+              </div>
+            </div>
+
+          </div>
+        </template>
+      </demo-snippet>
+
+      <h3>&#60;material-card-row&#62; Demo with hero-only</h3>
+      <demo-snippet>
+        <template>
+          <div is="material-card-row" hero-only>
+            
+            <img src="http://placekitten.com/g/500/300" alt="placekitten" card-hero>
+
+          </div>
+        </template>
+      </demo-snippet>
+
+    </div>
+
+  </body>
+</html>
