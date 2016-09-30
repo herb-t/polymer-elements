@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <title>polymer-yt-player demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import" href="../polymer-yt-player.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+      .demo-layout {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+    </style>
+
+  </head>
+  <body>
+
+    <div class="demo-layout">
+
+      <h3>Basic &#60;polymer-yt-player&#62; Demo</h3>
+      <demo-snippet>
+        <template>
+
+          <polymer-yt-player
+            id="video"
+            video-id="frdj1zb9sMY" 
+            height="auto" 
+            width="100%" 
+            rel="0" 
+            start="1" 
+            thumbnail="https://cms-assets.tutsplus.com/uploads/users/69/posts/26743/image/video-styles-with-thumbnail.jpg" 
+            lang="en" 
+            fluid>
+          </polymer-yt-player>
+
+        </template>
+      </demo-snippet>
+    </div>
+
+  </body>
+</html>
