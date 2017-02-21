@@ -16,11 +16,78 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../neon-animation/neon-animations.html">
 
 <!--
-`<polymer-image-carousel>` is an image carousel element. Any child elements are treated as slides. Content defines the height.  Place images in a regular `<img>` tag or an `<iron-image>` element.  Creates indicator nav dots for each image added but only if there are more than one image(s) in the manifest.
+`<polymer-image-carousel>` is a carousel element. Any child elements are treated as slides. Define the desired `width` and `height` properties, then apply the `fluid` property to preserve the aspect ratio. Use the `indicators` attribute to create indicator nav dots for each image added but only if there are more than one image(s) in the manifest. Use the `arrows` attribute to create next and previous navigation arrows.  The `fade-in-out` attribute changes the animation from slide in/out to fade in/out.
 
 Example:
 
     <polymer-image-carousel>
+
+      <img src="../path/to/image.jpg">
+      <img src="../path/to/image.png">
+      <img src="../path/to/image.gif">
+      <img src="../path/to/image.jpeg">
+
+    </polymer-image-carousel>
+
+A carousel with the `fluid` attribute will set its width to 100% to fill the parent container, while adding padding-top to preserve the aspect ratio provided by width and height. If width and height have not been set, the player will fall back to a 16:9 aspect ratio. This is useful for responsive designs where you don't want to introduce letterboxing on your video.
+
+    <polymer-image-carousel width="960px" height="530px" fluid>
+
+      <img src="../path/to/image.jpg">
+      <img src="../path/to/image.png">
+      <img src="../path/to/image.gif">
+      <img src="../path/to/image.jpeg">
+
+    </polymer-image-carousel>
+
+A carousel with the `indicators` attribute will create pagination indicators for each slide added to the carousel.
+
+    <polymer-image-carousel width="960px" height="530px" indicators>
+
+      <img src="../path/to/image.jpg">
+      <img src="../path/to/image.png">
+      <img src="../path/to/image.gif">
+      <img src="../path/to/image.jpeg">
+
+    </polymer-image-carousel>
+
+A carousel with the `arrows` attribute will display left/previous and right/next navigation arrows.
+
+    <polymer-image-carousel width="960px" height="530px" arrows>
+
+      <img src="../path/to/image.jpg">
+      <img src="../path/to/image.png">
+      <img src="../path/to/image.gif">
+      <img src="../path/to/image.jpeg">
+
+    </polymer-image-carousel>
+
+A carousel with the `locked` attribute will lock the directional navigation to stop at the beginning and end of the carousel.
+
+    <polymer-image-carousel width="960px" height="530px" locked>
+
+      <img src="../path/to/image.jpg">
+      <img src="../path/to/image.png">
+      <img src="../path/to/image.gif">
+      <img src="../path/to/image.jpeg">
+
+    </polymer-image-carousel>
+
+A carousel with the `fade-in-out` attribute will use a fade in and out animation to go through the slides.
+
+    <polymer-image-carousel width="960px" height="530px" fade-in-out>
+
+      <img src="../path/to/image.jpg">
+      <img src="../path/to/image.png">
+      <img src="../path/to/image.gif">
+      <img src="../path/to/image.jpeg">
+
+    </polymer-image-carousel>
+
+A carousel with the `autoplay` attribute will autoplay the slides based on the `transition-time` attribute.
+`autoplay` will stop on interaction (_onSwipe & _onTap).
+
+    <polymer-image-carousel autoplay transition-time="3000">
 
       <img src="../path/to/image.jpg">
       <img src="../path/to/image.png">
@@ -35,8 +102,17 @@ The following custom properties and mixins are available for styling:
 
 Custom property | Description | Default
 ----------------|-------------|----------
+`--indicator-width` | indicator width value | 15px
+`--indicator-height` | indicator height value | 15px
 `--indicator-color` | indicator color | grey
 `--indicator-color-selected` | indicator color when selected/active | light grey
+`--indicator-border-radius` | indicator border-radius value | 50%
+`--nav-arrow-width` | carousel nav arrow width value | 15px
+`--nav-arrow-height` | carousel nav arrow height value | 25px
+`--nav-arrow-color` | carousel nav arrow color | white
+`--polymer-image-carousel` | Mixin applied to the carousel | `{}`
+`--content-container` | Mixin applied to the #container div | `{}`
+
 
 @element polymer-image-carousel
 @demo demo/index.html
@@ -52,12 +128,22 @@ Custom property | Description | Default
        */
 
       :host {
+        --indicator-width: 15px;
+        --indicator-height: 15px;
         --indicator-color: #a8a8a8;
         --indicator-color-selected: #e1e1e1;
-          
+        --indicator-border-radius: 50%;
+        --nav-arrow-width: 15px;
+        --nav-arrow-height: 25px;
+        --nav-arrow-color: #ffffff;
+        @apply(--polymer-image-carousel);
+
         display: block;
         position: relative;
         cursor: default;
+        -webkit-box-sizing: border-box;
+           -moz-box-sizing: border-box;
+                box-sizing: border-box;
       }
 
       /**
@@ -79,6 +165,12 @@ Custom property | Description | Default
                 user-drag: none;
       }
 
+      #carousel ::content img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+      }
+
       /**
        * Container styles
        */
@@ -86,6 +178,7 @@ Custom property | Description | Default
       #container {
         max-width: 100%;
         max-height: 100%;
+        @apply(--content-container);
       }
 
       /**
@@ -116,6 +209,9 @@ Custom property | Description | Default
         margin: 0;
         padding: 0;
         width: 100%;
+        visibility: hidden;
+        opacity: 0;
+        z-index: -1;
         display: -webkit-box;
         display: -moz-box;
         display: -ms-flexbox;
@@ -153,10 +249,10 @@ Custom property | Description | Default
       #indicators button:before {
         content: '';
         display: block;
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        background: #a8a8a8;
+        width: var(--indicator-width);
+        height: var(--indicator-height);
+        border-radius: var(--indicator-border-radius);
+        background: var(--indicator-color);
         box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, .25);
         margin: 30px 0;
         -webkit-transition: background 0.3s ease-in-out;
@@ -167,13 +263,86 @@ Custom property | Description | Default
       }
 
       #indicators button.selected:before {
-        background: #e1e1e1;
+        background: var(--indicator-color-selected);
       }
 
       #indicators button:focus,
+      #indicators button:active,
       #indicators button.selected {
         outline: none;
         border: none;
+      }
+
+      #arrows {
+        position: relative;
+        bottom: -18px;
+        left: 0;
+        display: none;
+      }
+
+      #arrowLeft,
+      #arrowRight {
+        position: absolute;
+        background: rgba(255, 255, 255, 0);
+        z-index: 10;
+        padding: 10px;
+        cursor: pointer;
+        width: var(--nav-arrow-width);
+        height: var(--nav-arrow-height);
+      }
+
+      #arrowLeft {
+        bottom: 30px;
+        left: 10px;
+      }
+
+      #arrowRight {
+        bottom: 30px;
+        right: 10px;
+      }
+
+      .arrow-fill {
+        fill: var(--nav-arrow-color);
+      }
+
+      :host([indicators]) #indicators {
+        visibility: visible;
+        opacity: 1;
+        z-index: 1;
+      }
+
+      :host([arrows]) #arrows {
+        display: block;
+      }
+
+      :host-context([dir=rtl]) #arrowLeft,
+      :host-context([dir=rtl]) #arrowRight {
+        -webkit-transform: scaleX(-1);
+           -moz-transform: scaleX(-1);
+            -ms-transform: scaleX(-1);
+             -o-transform: scaleX(-1);
+                transform: scaleX(-1);
+      }
+
+      @media screen and (max-width: 767px) {
+        #indicators button:before {
+          width: 10px;
+          height: 10px;
+          margin: 20px 0 10px 0;
+        }
+
+        #arrowLeft,
+        #arrowRight {
+          font-size: 18px;
+        }
+
+        #arrowLeft {
+          left: 5px;
+        }
+
+        #arrowRight {
+          right: 5px;
+        }
       }
 
     </style>
@@ -186,12 +355,37 @@ Custom property | Description | Default
 
       </neon-animated-pages>
 
+      <!-- indicators -->
       <div id="indicators" class="indicators" hidden$="{{_single}}" role="listbox" aria-controls="carousel">
         <template is="dom-repeat" items="{{_items}}">
 
           <button class$="indicator {{_getSelectedClass(index, _selected)}}" role="option" aria-selected="{{_getSelected(index, _selected)}}" on-tap="_onTap"></button>
 
         </template>
+      </div>
+
+      <!-- nav arrows -->
+      <div id="arrows">
+        <div id="arrowLeft" on-tap="_selectPrev" hidden$="{{_single}}">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+             viewBox="0 0 37.4 66" style="enable-background:new 0 0 37.4 66;" xml:space="preserve">
+            <g>
+              <path class="arrow-fill" d="M1.6,36.1l28,28c1.7,1.7,4.4,1.7,6.1,0s1.7-4.4,0-6.1l-25-25l25-25c1.7-1.7,1.7-4.4,0-6.1s-4.4-1.7-6.1,0
+                l-28,28c-0.9,0.9-1.3,2-1.3,3.1C0.4,34.1,0.8,35.2,1.6,36.1z"/>
+            </g>
+          </svg>
+        </div>
+
+        <div id="arrowRight" on-tap="_selectNext" hidden$="{{_single}}">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+             viewBox="0 0 37.4 66" style="enable-background:new 0 0 37.4 66;" xml:space="preserve">
+            <g>
+              <path class="arrow-fill" d="M35.7,29.9l-28-28c-1.7-1.7-4.4-1.7-6.1,0S0,6.3,1.6,8l25,25l-25,25c-1.7,1.7-1.7,4.4,0,6.1
+                c1.7,1.7,4.4,1.7,6.1,0l28-28c0.9-0.9,1.3-2,1.3-3.1C37,31.9,36.6,30.8,35.7,29.9z"/>
+            </g>
+
+          </svg>
+        </div>
       </div>
 
     </div>
@@ -222,7 +416,7 @@ Custom property | Description | Default
        */
 
       properties: {
-        
+
         _items: {
           type: Object,
           value: function() {
@@ -295,9 +489,32 @@ Custom property | Description | Default
         verticalThreshold: {
           type: Number,
           value: 50
+        },
+
+        /**
+         * Set the time between transitions (milliseconds)
+         */
+        transitionTime: {
+          type: Number,
+          value: 3000
+        },
+
+        /**
+         * check if autoplay is initialised
+         */
+        _isAutoPlay: {
+          type: Boolean,
+          value: false
         }
       },
 
+      /**
+       * private method when fluid attribute is set
+       * changes padding-top value
+       * @param  {number} width - width value
+       * @param  {number} height - height value
+       * @param  {number} ratio - ratio value: (padding-top)
+       */
       _computeContainerStyle: function(width, height, ratio) {
 
         var style = 'width:' + width + '; height:' + height;
@@ -326,10 +543,16 @@ Custom property | Description | Default
           this.height = 'auto';
           this.ratio = (ratio * 100) + '%';
         }
+
+        this.autoPlayer;
+        if (this.hasAttribute('autoplay')) {
+          this._startAutoPlay();
+        }
       },
 
       /**
        * Check if document is rtl
+       * inverts swipe slide animation direction
        */
       _isRtl: function() {
 
@@ -339,16 +562,12 @@ Custom property | Description | Default
 
       /**
        * Set single flag for template
+       * if there is only one slide
+       * don't show indicators or arrows
        */
       _setSingle: function() {
 
         this._single = this.$.carousel.items.length < 2;
-
-      },
-
-      _clamp: function(value, min, max) {
-
-        return Math.max(Math.min(max, value), min);
 
       },
 
@@ -363,28 +582,26 @@ Custom property | Description | Default
 
         if (index !== this._selected) {
 
-          if (this._isRtl() ? index <= this._selected : index > this._selected) {
-              this._entryAnimation = 'slide-from-right-animation';
-              this._exitAnimation = 'slide-left-animation';
+          if (this.hasAttribute('fade-in-out')) {
+
+            this._entryAnimation = 'fade-in-animation';
+            this._exitAnimation = 'fade-out-animation';
+
           } else {
-            this._entryAnimation = 'slide-from-left-animation';
-            this._exitAnimation = 'slide-right-animation';
+
+            if (this._isRtl() ? index <= this._selected : index > this._selected) {
+                this._entryAnimation = 'slide-from-right-animation';
+                this._exitAnimation = 'slide-left-animation';
+            } else {
+              this._entryAnimation = 'slide-from-left-animation';
+              this._exitAnimation = 'slide-right-animation';
+            }
+
           }
 
           this._selected = index;
 
         }
-
-      },
-
-      /**
-       * On Tap function
-       * Sets selected slide on tap.
-       * @param  {event} e - event fired from tap.
-       */
-      _onTap: function(e) {
-
-        this._setSelected(e.model.index);
 
       },
 
@@ -411,16 +628,88 @@ Custom property | Description | Default
       },
 
       /**
+       * On Tap function
+       * Sets selected slide on tap.
+       * @param  {event} e - event fired from tap.
+       */
+      _onTap: function(e) {
+
+        if (this._isAutoPlay) {
+          this._stopAutoPlay();
+        }
+
+        this._setSelected(e.model.index);
+
+      },
+
+      /**
        * Respond to swipes
        * @param {event} e
        */
-
       _onSwipe: function(e) {
 
         var dir = e.type === 'swipe-right' ? 1 : -1;
         var step = this._isRtl() ? 1 : -1;
 
-        this._setSelected(this._selected + step * dir);
+        if (this._isAutoPlay) {
+          this._stopAutoPlay();
+        }
+
+        if (this.hasAttribute('locked')) {
+
+          this._setSelected(this._selected + step * dir);
+
+        } else {
+
+          if (e.type === 'swipe-right') {
+            if(this._selected === 0) {
+
+              this._setSelected(this._items.length - 1);
+
+            } else {
+
+              this._setSelected(this._selected - 1);
+
+            }
+          } else {
+            if((this._selected + 1) > (this._items.length - 1)) {
+
+              this._setSelected(0);
+
+            } else {
+
+              this._setSelected(this._selected + 1);
+
+            }
+          }
+
+        }
+
+      },
+
+      /**
+       * Select next function
+       */
+      _selectNext: function() {
+
+        if((this._selected + 1) > (this._items.length - 1)) {
+          this._setSelected(0);
+        } else {
+          this._setSelected(this._selected + 1);
+        }
+
+      },
+
+      /**
+       * Select prev function
+       */
+      _selectPrev: function() {
+
+        if(this._selected === 0) {
+          this._setSelected(this._items.length - 1);
+        } else {
+          this._setSelected(this._selected - 1);
+        }
 
       },
 
@@ -449,8 +738,39 @@ Custom property | Description | Default
         if (Math.abs(dx) > this.horizontalThreshold && Math.abs(dy) < this.verticalThreshold) {
 
           this.fire(name);
-          
+
         }
+      },
+
+       /**
+       * continous loop
+       */
+       _autoPlay: function() {
+         this.autoPlayer = setInterval(function() {
+           this._selectNext();
+         }.bind(this), this.transitionTime);
+       },
+
+       /**
+       * Stop carousel loop
+       */
+      _stopAutoPlay: function() {
+       this._isAutoPlay = false;
+        clearInterval(this.autoPlayer);
+      },
+
+      /**
+       * Start carousel loop
+       */
+      _startAutoPlay: function() {
+       this._isAutoPlay = true;
+       this._autoPlay();
+      },
+
+      _clamp: function(value, min, max) {
+
+        return Math.max(Math.min(max, value), min);
+
       }
 
     });

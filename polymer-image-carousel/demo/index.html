@@ -12,20 +12,111 @@
     <link rel="import" href="../polymer-image-carousel.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
+      .demo-container {
+        width: 100%;
+        max-width: 960px;
+        margin: 0 auto;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+      }
     </style>
   </head>
   <body>
 
-    <div class="vertical-section-container centered">
-      <h3>Basic polymer-image-carousel Demo</h3>
+    <div class="demo-container">
+      <h3>Basic &#60;polymer-image-carousel&#62; Demo</h3>
       <demo-snippet>
         <template>
           <polymer-image-carousel>
 
-            <img src="http://placekitten.com/g/500/300" alt="kitty">
-            <img src="http://placekitten.com/g/500/200" alt="kitty">
-            <img src="http://placekitten.com/g/500/300" alt="kitty">
-            <img src="http://placekitten.com/g/500/200" alt="kitty">
+            <img src="http://placekitten.com/g/500/300" alt="carousel images">
+            <img src="http://placekitten.com/g/600/400" alt="">
+            <img src="http://placekitten.com/g/700/400" alt="">
+            <img src="http://placekitten.com/g/600/500" alt="">
+
+          </polymer-image-carousel>
+        </template>
+      </demo-snippet>
+
+      <h3>&#60;polymer-image-carousel fluid&#62; Demo</h3>
+      <demo-snippet>
+        <template>
+          <polymer-image-carousel fluid>
+
+            <img src="http://placekitten.com/g/500/300" alt="carousel images">
+            <img src="http://placekitten.com/g/600/400" alt="">
+            <img src="http://placekitten.com/g/700/400" alt="">
+            <img src="http://placekitten.com/g/600/500" alt="">
+
+          </polymer-image-carousel>
+        </template>
+      </demo-snippet>
+
+      <h3>&#60;polymer-image-carousel width="1280" height="530" fluid indicators&#62; with indicators Demo</h3>
+      <demo-snippet>
+        <template>
+          <polymer-image-carousel width="1280" height="530" fluid indicators>
+
+            <img src="http://placekitten.com/g/500/300" alt="carousel images">
+            <img src="http://placekitten.com/g/600/400" alt="">
+            <img src="http://placekitten.com/g/700/400" alt="">
+            <img src="http://placekitten.com/g/600/300" alt="">
+
+          </polymer-image-carousel>
+        </template>
+      </demo-snippet>
+
+      <h3>&#60;polymer-image-carousel width="1280" height="530" fluid locked&#62; locked direction Demo</h3>
+      <demo-snippet>
+        <template>
+          <polymer-image-carousel width="1280" height="530" fluid indicators locked>
+
+            <img src="http://placekitten.com/g/500/300" alt="carousel images">
+            <img src="http://placekitten.com/g/600/400" alt="">
+            <img src="http://placekitten.com/g/700/400" alt="">
+            <img src="http://placekitten.com/g/600/300" alt="">
+
+          </polymer-image-carousel>
+        </template>
+      </demo-snippet>
+
+      <h3>&#60;polymer-image-carousel width="1280" height="530" fluid fade-in-out&#62; fade-in-out Demo</h3>
+      <demo-snippet>
+        <template>
+          <polymer-image-carousel width="1280" height="530" fluid indicators fade-in-out>
+
+            <img src="http://placekitten.com/g/500/300" alt="carousel images">
+            <img src="http://placekitten.com/g/600/400" alt="">
+            <img src="http://placekitten.com/g/700/400" alt="">
+            <img src="http://placekitten.com/g/600/300" alt="">
+
+          </polymer-image-carousel>
+        </template>
+      </demo-snippet>
+
+      <h3>&#60;polymer-image-carousel width="1280" height="530" fluid indicators arrows&#62; with indicators and arrows Demo</h3>
+      <demo-snippet>
+        <template>
+          <polymer-image-carousel width="1280" height="530" fluid indicators arrows>
+
+            <img src="http://placekitten.com/g/500/300" alt="carousel images">
+            <img src="http://placekitten.com/g/600/400" alt="">
+            <img src="http://placekitten.com/g/700/400" alt="">
+            <img src="http://placekitten.com/g/600/300" alt="">
+
+          </polymer-image-carousel>
+        </template>
+      </demo-snippet>
+
+      <h3>&#60;polymer-image-carousel width="1280" height="530" fluid indicators autoplay&#62; with autoplay Demo</h3>
+      <demo-snippet>
+        <template>
+          <polymer-image-carousel width="1280" height="530" fluid indicators autoplay transition-time="2000">
+
+            <img src="http://placekitten.com/g/500/300" alt="carousel images">
+            <img src="http://placekitten.com/g/600/400" alt="">
+            <img src="http://placekitten.com/g/700/400" alt="">
+            <img src="http://placekitten.com/g/600/300" alt="">
 
           </polymer-image-carousel>
         </template>

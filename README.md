@@ -1,6 +1,6 @@
 ## Polymer Custom Elements
 
-A collection of elements that can be reused.
+A collection of elements to use with Polymer.
 
 ### Setup
 
