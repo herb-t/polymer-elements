@@ -13,6 +13,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../google-youtube/google-youtube.html">
 <link rel="import" href="../promise-polyfill/promise-polyfill.html">
 
+<!-- Tracking Behavior -->
+<link rel="import" href="polymer-yt-player-trackable-behavior.html">
+
 <!--
 `<polymer-yt-player>` is a wrapper for the `<google-youtube>` video element and contains several parameters which can be seen below.  Parameter definitions can be seen here: https://elements.polymer-project.org/elements/google-youtube
 
@@ -25,9 +28,16 @@ Example:
       rel="number..."
       start="number..."
       autoplay="number..."
-      thumbnail="text..."
-      fluid="text...">
+      thumbnail="text...">
     </polymer-yt-player>
+
+### Styling
+
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--polymer-yt-player` | Mixin applied to the element | `{}`
 
 @element polymer-yt-player
 @demo demo/index.html
@@ -35,10 +45,12 @@ Example:
 
 <dom-module id="polymer-yt-player">
   <template>
-    <style include="shared-styles">
+    <style>
 
       :host {
         display: block;
+
+        @apply(--polymer-yt-player);
       }
 
       google-youtube {
@@ -60,6 +72,8 @@ Example:
       autoplay="{{autoplay}}"
       thumbnail="{{thumbnail}}"
       hl="{{lang}}"
+      currenttime="{{currentTime}}"
+      duration="{{duration}}"
       fluid
       on-google-youtube-state-change="_checkForVideoPlaying">
     </google-youtube>
@@ -80,43 +94,230 @@ Example:
        */
 
       properties: {
+         /**
+       * give the element an id
+       * @type {String}
+       */
         id: {
           type: String,
           value: ''
         },
+        /**
+       * Sets the id of the video to play
+       * @type {String}
+       */
         videoId: {
           type: String,
           value: ''
         },
+         /**
+       * Sets the height of the video to play
+       * @type {String}
+       */
         height: {
           type: String,
           value: ''
         },
+         /**
+       * Sets the language
+       * @type {String}
+       */
         lang: {
           type: String,
           value: ''
         },
+         /**
+       * Sets the width of the video to play
+       * @type {String}
+       */
         width: {
           type: String,
           value: ''
         },
+         /**
+       * Indicates whether the player should show related videos when playback of the initial video ends
+       * @type {Number}
+       */
         rel: {
           type: Number,
           value: 0
         },
+          /**
+       * Causes the player to begin playing the video at the given number of seconds from the start of the video
+       * @type {Number}
+       */
         start: {
           type: Number,
           value: 0
         },
-        autoplay: {
-          type: Number,
-          value: 0
-        },
+         /**
+       * The URL of an image to use as a custom thumbnail
+       * @type {Number}
+       */
         thumbnail: {
           type: String,
           value: ''
         },
+        /**
+         * This parameter indicates whether the video controls will automatically hide after a video begins playing. (https://developers.google.com/youtube/player_parameters#autohide)
+         * @type {Number}
+         */
+        autohide: {
+          type: Number,
+          value: 2
+        },
+        /**
+         * This parameter specifies whether the initial video will automatically start to play when the player loads.  (https://developers.google.com/youtube/player_parameters#autoplay)
+         * @type {Number}
+         */
+        autoplay: {
+          type: Number,
+          value: 0
+        },
+        /**
+         * Setting the parameter's value to 1 causes closed captions to be shown by default, even if the user has turned captions off. (https://developers.google.com/youtube/player_parameters#cc_load_policy)
+         * @type {Number}
+         */
+        cc_load_policy: {
+          type: Number,
+          value: 0
+        },
+        /**
+         * This parameter specifies the color that will be used in the player's video progress bar to highlight the amount of the video that the viewer has already seen. Valid parameter values are red and white. (https://developers.google.com/youtube/player_parameters#color)
+         * @type {String}
+         */
+        color: {
+          type: String,
+          value: 'red'
+        },
+        /**
+         * This parameter indicates whether the video player controls are displayed. (https://developers.google.com/youtube/player_parameters#controls)
+         * @type {Number}
+         */
+        controls: {
+          type: Number,
+          value: 1
+        },
+        /**
+         * Setting the parameter's value to 1 causes the player to respond to keyboard controls. The default value is 0, which means that keyboard controls are disabled. (https://developers.google.com/youtube/player_parameters#disablekb)
+         * @type {Number}
+         */
+        disablekb: {
+          type: Number,
+          value: 0
+        },
+        /**
+         * This parameter specifies the time, measured in seconds from the start of the video, when the player should stop playing the video. The parameter value is a positive integer. (https://developers.google.com/youtube/player_parameters#end)
+         * @type {Number}
+         */
+        end: {
+          type: Number
+        },
+        /**
+         * Setting this parameter to 0 prevents the fullscreen button from displaying in the player. The default value is 1, which causes the fullscreen button to display. (https://developers.google.com/youtube/player_parameters#fs)
+         * @type {Number}
+         */
+        fs: {
+          type: Number,
+          value: 1
+        },
+        /**
+         * Sets the player's interface language. The parameter value is an ISO 639-1 two-letter language code or a fully specified locale. (https://developers.google.com/youtube/player_parameters#h1)
+         * @type {String}
+         */
+        h1: {
+          type: String
+        },
+        /**
+         * Setting the parameter's value to 1 causes video annotations to be shown by default, whereas setting to 3 causes video annotations to not be shown by default. (https://developers.google.com/youtube/player_parameters#iv_load_policy)
+         * @type {Number}
+         */
+        iv_load_policy: {
+          type: Number,
+          value: 1
+        },
+        /**
+         * The list parameter, in conjunction with the listType parameter, identifies the content that will load in the player.  If you specify values for the list and listType parameters, the IFrame embed URL does not need to specify a video ID. (https://developers.google.com/youtube/player_parameters#list)
+         * @type {String}
+         */
+        list: {
+          type: String
+        },
+        /**
+         * The listType parameter, in conjunction with the list parameter, identifies the content that will load in the player. (https://developers.google.com/youtube/player_parameters#listType)
+         * @type {String}
+         */
+        listType: {
+          type: String
+        },
+        /**
+         * In the case of a single video player, a setting of 1 causes the player to play the initial video again and again. In the case of a playlist player (or custom player), the player plays the entire playlist and then starts again at the first video. (https://developers.google.com/youtube/player_parameters#loop)
+         * @type {Number}
+         */
+        loop: {
+          type: Number,
+          value: 0
+        },
+        /**
+         * This parameter lets you use a YouTube player that does not show a YouTube logo. Set the parameter value to 1 to prevent the YouTube logo from displaying in the control bar. (https://developers.google.com/youtube/player_parameters#modestbranding)
+         * @type {Number}
+         */
+        modestbranding: {
+          type: Number
+        },
+        /**
+         * This parameter specifies a comma-separated list of video IDs to play. (https://developers.google.com/youtube/player_parameters#playlist)
+         * @type {String}
+         */
+        playlist: {
+          type: String
+        },
+        /**
+         * This parameter controls whether videos play inline or fullscreen in an HTML5 player on iOS. (https://developers.google.com/youtube/player_parameters#playsinline)
+         * @type {Number}
+         */
+        playsinline: {
+          type: Number
+        },
+        /**
+         * Setting the parameter's value to 0 causes the player to not display information like the video title and uploader before the video starts playing. (https://developers.google.com/youtube/player_parameters#showinfo)
+         * @type {Number}
+         */
+        showinfo: {
+          type: Number
+        },
+        /**
+         * This parameter indicates whether the embedded player will display player controls (like a play button or volume control) within a dark or light control bar. This parameter has been deprecated for HTML5 players, which always use the dark theme. (https://developers.google.com/youtube/player_parameters#theme)
+         * @type {String}
+         */
+        theme: {
+          type: String,
+          value: 'dark'
+        },
+        /**
+         * The current time of the video.
+         * @type {Number}
+         */
+        currentTime: {
+          type: Number,
+          notify: true
+        },
+        /**
+         * The duration of the video.
+         * @type {Number}
+         */
+        duration: {
+          type: Number,
+          notify: true
+        }
       },
+
+      /**
+       * Element Behaviors
+       * @type {Array}
+       */
+
+      behaviors: [Polymer.PolymerYTPlayerTrackableBehavior],
 
       /**
        * Don't set the video id until the player is attached to delay
@@ -166,6 +367,7 @@ Example:
         }
 
       }
+
     });
   })();
   </script>

@@ -1,0 +1,33 @@
+<link rel="import" href="../polymer/polymer.html">
+<script>
+  Polymer.PolymerYTPlayerTrackableBehavior = {
+    /**
+     * @param {!string} category Tracking category
+     * @param {!string} action Tracking action
+     * @param {!string} label Label to track
+     * @param {!string} value Value to track
+     */
+    trackEvent: function(category, action, label, value) {
+      ga('send', 'event', {
+        eventCategory: category,
+        eventAction: action,
+        eventLabel: label,
+        eventValue: value
+      });
+    },
+    /**
+     * @param {!string} category Tracking category
+     * @param {!string} action Tracking action
+     * @param {!string} label Label to track
+     * @param {!string} value Value to track
+     */
+    trackNonInteraction: function(category, action, label, value) {
+      ga('send', 'event', {
+        eventCategory: category,
+        eventAction: action,
+        eventLabel: label,
+        eventValue: value
+      });
+    }
+  };
+</script>
