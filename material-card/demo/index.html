@@ -9,30 +9,41 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
-    <link rel="import" href="../material-card-col.html">
+    <link rel="import" href="../material-card.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
       .demo-layout {
         width: 100%;
-        max-width: 1080px;
+        max-width: 960px;
         margin: 0 auto;
       }
-        
+
       .copy {
         padding: 0 25px;
       }
 
+      @media screen and (max-width: 767px) {
+        .copy-alternate-layout {
+          -webkit-align-items: flex-start;
+                  align-items: flex-start;
+          -webkit-flex-direction: column;
+              -ms-flex-direction: column;
+                  flex-direction: column;
+        }
+        .copy-alternate-layout h1 { -webkit-flex: 1; flex: 1; }
+        .copy-alternate-layout p { -webkit-flex: 1; flex: 1; }
+      }
     </style>
   </head>
   <body>
 
     <div class="demo-layout">
-      <h3>Basic &#60;material-card-col&#62; Demo</h3>
+      <h3>Basic &#60;material-card&#62; Demo</h3>
       <demo-snippet>
         <template>
-          <div is="material-card-col">
+          <material-card>
 
-            <img src="http://placekitten.com/g/700/200" alt="placekitten" card-hero>
+            <img src="http://placekitten.com/g/500/300" alt="placekitten" card-hero>
 
             <div card-content>
               <div class="copy">
@@ -41,16 +52,16 @@
               </div>
             </div>
 
-          </div>
+          </material-card>
         </template>
       </demo-snippet>
 
-      <h3>&#60;material-card-col&#62; Demo with reverse-layout</h3>
+      <h3>&#60;material-card row-reverse&#62; Demo with reverse-layout</h3>
       <demo-snippet>
         <template>
-          <div is="material-card-col" layout-reverse>
-            
-            <img src="http://placekitten.com/g/700/200" alt="placekitten" card-hero>
+          <material-card row-reverse>
+
+            <img src="http://placekitten.com/g/500/300" alt="placekitten" card-hero>
 
             <div card-content>
               <div class="copy">
@@ -59,11 +70,47 @@
               </div>
             </div>
 
-          </div>
+          </material-card>
         </template>
       </demo-snippet>
 
-      <h3>&#60;material-card-col&#62; Demo with custom copy-content styles</h3>
+      <h3>&#60;material-card vertical&#62; Demo with vertical layout</h3>
+      <demo-snippet>
+        <template>
+          <material-card vertical>
+
+            <img src="http://placekitten.com/g/700/200" alt="placekitten" alt="placekitten" card-hero>
+
+            <div card-content>
+              <div class="copy">
+                <h1>Headline</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias velit adipisci minima expedita fugit esse ducimus vel corporis, magni repellat, non, nobis reprehenderit odit illo officiis quas optio obcaecati pariatur.</p>
+              </div>
+            </div>
+
+          </material-card>
+        </template>
+      </demo-snippet>
+
+      <h3>&#60;material-card vertical column-reverse&#62; Demo with vertical reverse-layout</h3>
+      <demo-snippet>
+        <template>
+          <material-card vertical column-reverse>
+
+            <img src="http://placekitten.com/g/700/200" alt="placekitten" alt="placekitten" card-hero>
+
+            <div card-content>
+              <div class="copy">
+                <h1>Headline</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias velit adipisci minima expedita fugit esse ducimus vel corporis, magni repellat, non, nobis reprehenderit odit illo officiis quas optio obcaecati pariatur.</p>
+              </div>
+            </div>
+
+          </material-card>
+        </template>
+      </demo-snippet>
+
+      <h3>&#60;material-card vertical&#62; Demo with custom copy-content styles</h3>
       <demo-snippet>
         <template>
 
@@ -79,7 +126,7 @@
             .copy-alternate-layout h1 { -webkit-flex: 1; flex: 1; }
             .copy-alternate-layout p { -webkit-flex: 3; flex: 3; }
           </style>
-          <div is="material-card-col">
+          <material-card vertical>
 
             <img src="http://placekitten.com/g/700/200" alt="placekitten" card-hero>
 
@@ -90,18 +137,18 @@
               </div>
             </div>
 
-          </div>
+          </material-card>
         </template>
       </demo-snippet>
 
-      <h3>&#60;material-card-col&#62; Demo with hero-only</h3>
+      <h3>&#60;material-card hero-only&#62; Demo with hero-only</h3>
       <demo-snippet>
         <template>
-          <div is="material-card-col" hero-only>
-            
-            <img src="http://placekitten.com/g/700/200" alt="placekitten" card-hero>
+          <material-card hero-only>
 
-          </div>
+            <img src="http://placekitten.com/g/700/200" alt="placekitten" alt="placekitten" card-hero>
+
+          </material-card>
         </template>
       </demo-snippet>
 

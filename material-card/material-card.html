@@ -11,23 +11,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 
 <!--
-`<material-card-col>` is a card element that displays a full size image on one end of the card (either an image tag or `<iron-image>`), and some text/copy on the other end (top or bottom).  The 'layout-reverse' attribute will reverse the order of what goes on the left and what goes on the right (desktop).  Mobile layout stacks and the image always goes first (top).
+`<material-card>` is a card element that displays a full size image on one side or end of the card (`<img>`, `<iron-image>`, `<video>`), and some text/copy on the other.  The 'vertical' attribute displays the content in a stacked layout. The 'layout-reverse' attribute will reverse the order of what goes on the left/top and what goes on the right/bottom (desktop).  Mobile layout stacks with the hero image displayed first (top).
 
 Example:
 
-    <div is="material-card-col">
-      <img src="../path/to/image.jpg" card-hero>
+    <material-card>
+
+      <iron-image sizing="cover" preload src="../path/to/image.jpg" card-hero></iron-image>
 
       <div card-content>
-        <div class="copy">
-          <h1>Your title</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-          Omnis, nostrum rerum sunt, cum ipsum dolorem, laudantium 
-          culpa reiciendis aliquid delectus eaque. Quisquam quia, 
-          impedit ab. Quidem illum vitae iure velit!</p>
-        </div>
+        <h1>Your title</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+        Omnis, nostrum rerum sunt, cum ipsum dolorem, laudantium
+        culpa reiciendis aliquid delectus eaque. Quisquam quia,
+        impedit ab. Quidem illum vitae iure velit!</p>
       </div>
-    </div>
+    </material-card>
 
 ### Styling
 
@@ -35,28 +34,35 @@ The following custom properties and mixins are available for styling:
 
 Custom property | Description | Default
 ----------------|-------------|----------
-`--card-align-items` | flex property: align-items value | center
+`--card-hero-flex-value` | flex property: flex value | 2
 `--card-hero-padding` | padding value for hero section of card | 0
+`--card-content-flex-value` | flex property: flex value | 1
 `--card-content-padding` | padding value for content section of card | 25px
 `--card-content-text-align` | content section text align property value | left
 `--card-background-color` | card background color | white
 `--card-border` | box shadow values - set to 'none' to remove | present
+`--material-card` | Mixin applied to the material-card | `{}`
+`--card-hero` | Mixin applied to the hero div element | `{}`
+`--card-content` | Mixin applied to the content div element | `{}`
 
-@element yt-next-up-card
+
+@element material-card
 @demo demo/index.html
 -->
 
-<dom-module id="material-card-col">
+<dom-module id="material-card">
   <template>
     <style>
       :host {
-        --card-align-items: center;
+        --card-hero-flex-value: 2;
         --card-hero-padding: 0;
+        --card-content-flex-value: 1;
         --card-content-padding: 25px;
         --card-content-text-align: left;
-        --card-background-color: #ffffff;     
+        --card-background-color: #ffffff;
         --card-border: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-        
+        @apply(--material-card);
+
         display: block;
       }
 
@@ -65,11 +71,12 @@ Custom property | Description | Default
         display: -ms-flexbox;
         display: -webkit-flex;
         display: flex;
-        -webkit-flex-direction: column;
-            -ms-flex-direction: column;
-                flex-direction: column;
-        -webkit-align-items: var(--card-align-items);
-                align-items: var(--card-align-items);
+        -webkit-flex-direction: row;
+            -ms-flex-direction: row;
+                flex-direction: row;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+                align-items: center;
         background: var(--card-background-color);
         -webkit-box-shadow: var(--card-border);
                 box-shadow: var(--card-border);
@@ -83,6 +90,10 @@ Custom property | Description | Default
         overflow: hidden;
         width: 100%;
         padding: var(--card-hero-padding);
+        -webkit-flex: var(--card-hero-flex-value);
+            -ms-flex: var(--card-hero-flex-value);
+                flex: var(--card-hero-flex-value);
+        @apply(--card-hero);
       }
 
       #hero ::content img {
@@ -105,22 +116,42 @@ Custom property | Description | Default
         -webkit-flex-direction: column;
             -ms-flex-direction: column;
                 flex-direction: column;
+        -webkit-flex: var(--card-content-flex-value);
+            -ms-flex: var(--card-content-flex-value);
+                flex: var(--card-content-flex-value);
         text-align: var(--card-content-text-align);
+        -webkit-box-sizing: border-box;
+           -moz-box-sizing: border-box;
+                box-sizing: border-box;
+        @apply(--card-content);
       }
 
-      :host[layout-reverse] .card-layout {
+      :host([vertical]) .card-layout {
+        -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+                flex-direction: column;
+      }
+
+      :host([row-reverse]) .card-layout {
+        -webkit-flex-direction: row-reverse;
+            -ms-flex-direction: row-reverse;
+                flex-direction: row-reverse;
+      }
+
+      :host([column-reverse]) .card-layout {
         -webkit-flex-direction: column-reverse;
             -ms-flex-direction: column-reverse;
                 flex-direction: column-reverse;
       }
 
-      :host[hero-only] .card-layout #content {
+      :host([hero-only]) .card-layout #content {
         display: none;
       }
 
       @media screen and (max-width: 767px) {
         .card-layout,
-        :host[layout-reverse] .card-layout {
+        :host([row-reverse]) .card-layout,
+        :host([column-reverse]) .card-layout {
           -webkit-flex-direction: column;
               -ms-flex-direction: column;
                   flex-direction: column;
@@ -151,9 +182,7 @@ Custom property | Description | Default
   <script>
     Polymer({
 
-      is: 'material-card-col',
-
-      extends: 'div'
+      is: 'material-card'
 
     });
   </script>
